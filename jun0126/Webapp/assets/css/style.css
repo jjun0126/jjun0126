@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        /*                        reset*/
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+html,body{    width: 100%;height: 100%;}
+body,h1,h2,h3,h4,ul,ol,dl,li,dt,dd,p {margin: 0; padding: 0;}
+a{ color: #333;text-decoration: none;}
+li{list-style: none;}
+img{border: none;}
+body{ background: url(images/00_bg.png)no-repeat center top;
+    font-family: 'Nanum Gothic',dotum, sans-serif;
+    font-size: 12px; /*폰트의 단위는 px,pt,%,em*/
+    line-height: 180%;
+    color: #333;}
+/*                        class*/
+.center910{
+    width: 910px;
+    margin: auto;
+}
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+        background{
+            background: #fd6a6a;} 
+        #top{
+            width: 100%;
+            height: 25px;
+            background: #222;
+            position: fixed;
+            top: 0;
+            left: 0;   
+        }
+        #top li{
+            float: left;
+            width: 65px;
+        }
+        #top li a{
+            display: block;
+            color: #ccc;
+            font-size: 11px;
+            text-align: center;
+            line-height: 25px;
+        }
+        #top #top_menu ul li{
+            float: none;
+        }
+        #top #top_menu{
+            height: 25px;
+            overflow: hidden;
+            position: absolute;
+            right:140px;
+        }
+        #top #top_menu ul li a{
+            display: block;
+            width: 65px;
+            height: 25px;
+        }
+        #top #top_menu:hover{
+            height: 100px;
+            background: #777;
+        }
+        #top #top_menu ul li a:hover{
+            background: #ccc;
+            color: #222;
+        }
+         #top #login{
+            position: absolute;
+            right:75px;
+        }
+        #top #login a{
+            display: block;
+            width: 65px;
+            height: 25px;
+        }
+         #top #join{
+            position: absolute;
+            right:10px;
+        }
+        #top #join a{
+            display: block;
+            width: 65px;
+            height: 25px;
+        } 
+         #top #logout{
+            position: absolute;
+            right:75px;
+        }
+        #top #logout a{
+            display: block;
+            width: 65px;
+            height: 25px;
+        }
+         #top #new_Write{
+            position: absolute;
+            right:10px;
+        }
+        #top #new_Write a{
+            display: block;
+            width: 65px;
+            height: 25px;
+        } 
+     
+/*    -------------------------------------------------------*/
+        #wrap{
+            background: #ffe4e1;
+        }
+        #header{
+            width: 910px;
+            height: 195px;
+            background: #f0ffff;
+            border-bottom: solid 10px #81acac;
+        }
+ 
+     
+      #con{
+            width: 910px;
+            clear: both;
+            padding-top: 80px;
+            background: #fff;
+        }
+         #left_con{
+            float: left;
+            width: 690px;
+            padding: 50px;
+        }
+         /*    -------------------------------------------------------*/     
+         
+        #viewer_form div{
+            float: left;
+            margin-bottom: 20px;
+        }
+        #viewer_title a{
+            font-weight: bold;
+            font-size: 14px;
+            
+            
+        }
+        #viewer_kategorie a{
+            font-size: 14px;
+            color: #ccc;
+            border-left: solid #ccc 1px; /*선*/
+            padding-left: 5px;
+            margin-left: 10px;
+        }
+
+        #viewer_contents{
+            clear: both;
+            width: 590px;
+        }
+        #viewer_contents p{
+            font-size: 14px;
+        }
+        #modify div{
+            float: left;
+            font-size: 14px;
+            margin-top: 15px; 
+        } 
+        #modify div a{
+            color: #f0f;
+        }
+        #modify div:nth-of-type(2) a{
+            border-left: solid #ccc 1px; /*선*/
+            padding-left: 5px;
+            margin-left: 10px;
+        }
+        #modify div:nth-of-type(3) a{
+            border-left: solid #ccc 1px; /*선*/
+            padding-left: 5px;
+            margin-left: 10px;
+        }
+        
+/*    -------------------------------------------------------*/
+        #left_con #title{
+            width: 590px;
+            height: 20px;
+            display: block
+            
+        }
+        #left_con #contents{
+            width: 590px;
+            min-height: 500px;
+        }
+        #new_Write_btn{
+        	hight: 30px;
+            width:  150px;
+            margin: auto;	
+  
+        }
+         #new_Write_btn #submit_btn{ 
+      		hight: 27px;	
+            width: 40px;
+            font: 8px;
+            margin: 5px;	
+            clear: both;
+            float: left;
+            
+        }
+        
+         #new_Write_btn #button_btn{ 
+      		hight: 27px;	
+            width: 40px;
+            font: 8px;
+            margin: 5px;	
+        
+        }
+        
+        #left_con div span {
+            font-size: 20px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 25px;
+            
+            
+        }
+
+
+/*    -------------------------------------------------------*/
+
+      #serch{
+            margin-left: 400px;
+            margin-bottom: 30px; 
+        }
+        #left_con tr th{
+            border-bottom: solid #ccc 1px;
+        }
+        #list {
+            width: 560px;
+        }
+        #list th:nth-of-type(1){
+            width: 50px;
+        }
+        #list th:nth-of-type(2){
+            width: 360px;
+        }
+        #list th:nth-of-type(3){
+            width: 90px;
+        }
+        #list th:nth-of-type(4){
+            width: 80px;
+        }
+        #list th:nth-of-type(5){
+            width: 50px;
+        }
+/*    -------------------------------------------------------*/
+        #right_con{
+            float: right;
+            width: 220px;    
+/*            background: #ddd;*/
+            
+        }
+        #right_con #photo{
+        
+            max-width: 170px;
+            max-height: 190px;
+            clear: both;
+            margin: 50px 25px;
+            
+        }
+        #right_con #calendar{
+            width: 170px;
+            height: 190px;
+            margin: 50px 25px;
+            background: #fff;
+            
+        }
+        #right_con #quickmenu{
+            width: 170px;
+            height: 190px;
+            margin: 80px 25px; 
+            font-size: 11px;
+        }
+        #right_con #quickmenu li{
+            width: 170px;
+            height: 30px;
+            line-height: 30px;
+        }
+        #right_con #quickmenu li a:hover{
+            color: #cb5245;
+        }
+        
+     /*    -------------------------------------------------------*/  
+
+         #left_con #comments{
+	         width: 590px;
+	         display:none;
+        }
+        #comments #commentsWriter_info div{
+	        
+	        background: #F2F2F2;
+	        float: left;
+	        
+	        
+        }
+        
+        
+         #commentsWriter_info #commentsWriter_user_ID{
+	         width: 50px;
+	         color: #cb5245; 
+        }
+        #commentsWriter_info #commentsWriter_date{
+     	    width: 70px;
+        }
+        #commentsWriter_info #commentsDelete{
+	        width:50px; 
+	        color: #cb5245;
+	         margin-right: 420px;
+        } 
+        #commentsContents{
+	        width: 590px;
+	        clear: both;
+	        
+	         
+        }
+        #comments_writer_contents{
+        width: 590px;
+        background: #F0FFFF;
+        }
+        #commentsWrite_btn{
+        float : right;
+        }
+        
+       

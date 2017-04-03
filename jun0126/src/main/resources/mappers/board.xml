@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<select id="total" resultType="int">
+		<![CDATA[ 
+			 select count (*) from board
+		 ]]>
+	</select>
+	<update id="hit" parameterType="int">
+		<![CDATA[ 
+ 			update board set hit = hit+1 where board_NO = #{board_NO}
+ 		]]>
+	</update>
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			delete from board where board_NO = #{board_NO}
+		]]>
+	</delete> 
+	
+	
+	
+	<select id="list" parameterType="map" resultType="BoardVO">
+		<![CDATA[ 
+ 			select board_NO, title,user_ID, contents, hit, reg_date, group_NO, order_NO, depth, rnum
+			from
+				(select board_NO, title,user_ID, contents, hit, reg_date, group_NO, order_NO, depth, rownum as rnum
+				from
+					(select A.board_NO, A.title, B.user_ID,  A.contents, A.hit, to_char(A.reg_date, 'yyyy-mm-dd') as reg_date, A.group_NO, A.order_NO, A.depth
+					from board A, member B where A.user_NO = B.user_NO
+ 		]]> 
+ 		   
+	    	    <if test="keyWord != null and keyWord != ''">
+	    	   <![CDATA[ 
+	    	   and (A.title like '%${keyWord}%' or A.contents like '%${keyWord}%')
+	    	   ]]>
+	    	   </if>  
+	   <![CDATA[   
+	    		order by group_NO desc, order_NO asc)o
+	        )r where rnum >= ((#{curPage} - 1) *  #{PAGE_SIZE} + 1) and rnum <=(#{curPage} * #{PAGE_SIZE})
+		]]>  
+	</select>
+	
+	
+	<select id="viewerList" parameterType="map" resultType="BoardVO">
+		<![CDATA[ 
+ 			select board_NO, title,user_ID, contents, hit, reg_date, group_NO, order_NO, depth, rnum
+			from
+				(select board_NO, title,user_ID, contents, hit, reg_date, group_NO, order_NO, depth, rownum as rnum
+				from
+					(select A.board_NO, A.title, B.user_ID,  A.contents, A.hit, to_char(A.reg_date, 'yyyy-mm-dd') as reg_date, A.group_NO, A.order_NO, A.depth
+					from board A, member B where A.user_NO = B.user_NO
+ 		]]> 
+ 		   
+	    	    <if test="keyWord != null and keyWord != ''">
+	    	   <![CDATA[ 
+	    	   and (A.title like '%${keyWord}%' or A.contents like '%${keyWord}%')
+	    	   ]]>
+	    	   </if>  
+	   <![CDATA[   
+	    		order by board_NO desc, group_NO desc, order_NO asc)o
+	        )r where rnum >= ((#{curPage} - 1) *  #{PAGE_SIZE} + 1) and rnum <=(#{curPage} * #{PAGE_SIZE})
+		]]>  
+	</select>
+	 
+	
+	 
+	 <select id="getBoardNO" parameterType="map" resultType="int">
+		<![CDATA[ 
+ 			select board_NO
+			from 
+				(select board_NO, rownum as rnum
+				from  board order by board_NO desc
+	        )r where rnum >= ((#{curPage} - 1) *  #{PAGE_SIZE} + 1) and rnum <=(#{curPage} * #{PAGE_SIZE})
+		]]>  
+	</select>         
+	
+	
+	<select id="selectBoard" parameterType="int" resultType="BoardVO">
+		<![CDATA[
+		 	select A.board_NO, A.title, B.user_ID, A.contents, A.hit, A.reg_date, A.group_NO, A.order_NO, A.depth from board A, member B 
+		 	where A.board_NO = #{board_NO} and A.user_NO = B.user_NO 
+		]]>
+	</select>
+	<insert id="insertWriter" parameterType="com.jun0126.VO.BoardVO">
+		<![CDATA[ 
+			INSERT INTO board (board_NO, title,user_ID, contents, hit, reg_date, group_NO, order_NO, depth,user_NO) 
+			values(board_seq.nextval, #{title},#{user_ID}, #{contents}, 0, sysdate, board_seq.currval , 0, 0, #{user_NO})
+		]]>
+	</insert>
+	<update id="updateModify" parameterType="BoardVO">
+		<![CDATA[
+			update board set title=#{title} ,contents = #{contents} where board_NO= #{board_NO}
+		]]>
+	</update> 
+
+	<update id="updateReply" parameterType="BoardVO">
+		<![CDATA[
+		    update board SET order_NO=orderNO+1 where group_NO=#{groupNO} and order_NO > #{order_NO}
+			
+		]]>
+	</update>
+
+	<insert id="insertReply" parameterType="com.jun0126.VO.BoardVO"> 
+		<![CDATA[
+			INSERT INTO board (board_NO, title,user_ID  contents, hit, reg_date, group_NO, order_NO, depth) 
+			values(board_seq.nextval, #{title}, #{user_ID}, #{contents}, 0, sysdate, #{group_NO}, #{order_NO} + 1, #{depth} + 1, #{user_NO}) 
+		]]>
+	</insert>
+
+
+
+</mapper>

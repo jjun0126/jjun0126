@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="guestBoard">
+
+	<select id="total" resultType="int">
+		<![CDATA[ 
+			 select count (*) from guestBoard
+		 ]]>
+	</select>
+	<update id="hit" parameterType="int">
+		<![CDATA[ 
+ 			update guestBoard set hit = hit+1 where Board_NO = #{Board_NO}
+ 		]]>
+	</update>
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			delete from guestBoard where Board_NO = #{board_NO}
+		]]>
+	</delete>
+	<select id="list" parameterType="map" resultType="GuestBoardVO">
+		<![CDATA[ 
+ 			select board_NO, title, user_ID, contents, hit, reg_date, group_NO, order_NO, depth, rnum
+			from
+				(select board_NO, title, user_ID, contents, hit, reg_date, group_NO, order_NO, depth, rownum as rnum
+				from
+					(select A.board_NO, A.title, B.user_ID,  A.contents, A.hit, to_char(A.reg_date, 'yyyy-mm-dd') as reg_date, A.group_NO, A.order_NO, A.depth
+					from guestBoard A, member B where A.user_NO = B.user_NO
+ 		]]>
+ 		    
+	    	   <if test="keyWord != null and keyWord != ''">
+	    	   <![CDATA[
+	    	   and (A.title like '%${keyWord}%' or A.contents like '%${keyWord}%')
+	    	   ]]>
+	    	   </if> 
+	   <![CDATA[
+	    		order by group_NO desc, order_NO asc)o
+	        )r where rnum >= ((#{curPage} - 1) *  #{PAGE_SIZE} + 1) and rnum <=(#{curPage} * #{PAGE_SIZE})
+		]]>
+	</select>
+	<select id="selectBoard" parameterType="int" resultType="GuestBoardVO">
+		<![CDATA[
+		 	select board_NO, title,user_ID, user_NO, contents, hit, reg_date, group_NO, order_NO, depth from guestBoard
+		 	where board_NO = #{board_NO}
+		]]>
+	</select>
+	<insert id="insertWriter" parameterType="com.jun0126.VO.GuestBoardVO">
+		<![CDATA[ 
+			INSERT INTO guestBoard (board_NO, title, contents, hit, reg_date, group_NO, order_NO, depth, user_NO, user_ID) 
+			values(board_seq.nextval, #{title}, #{contents}, 0, sysdate, board_seq.currval , 0, 0, #{user_NO}, #{user_ID})
+		]]>
+	</insert>
+	<update id="updateModify" parameterType="GuestBoardVO">
+		<![CDATA[
+			update guestBoard set title=#{title} ,contents = #{contents} where board_NO= #{board_NO}
+		]]>
+	</update> 
+
+	<insert id="insertReply" parameterType="GuestBoardVO"> 
+		<![CDATA[
+			INSERT INTO guestBoard (board_NO, title,  contents, hit, reg_date, group_NO, order_NO, depth,user_NO,user_ID) 
+			values(board_seq.nextval, #{title},  #{contents}, 0, sysdate, #{group_NO}, #{order_NO} + 1, #{depth} + 1, #{user_NO},#{user_ID}) 
+		]]>
+	</insert>
+
+
+
+
+</mapper>

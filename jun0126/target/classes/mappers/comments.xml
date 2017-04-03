@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comments">
+	<insert id="writer" parameterType="commentsVO">   
+		<![CDATA[  
+			INSERT INTO comments (comments_NO, board_NO, contents,  reg_date, group_NO, order_NO, depth, user_NO, user_ID) 
+			 values(comments_seq.nextval, #{board_NO}, #{contents}, sysdate, comments_seq.currval, 0, 0, #{user_NO}, #{user_ID})
+		]]>
+	</insert>   
+	
+	<select id="selectBoard" parameterType="int" resultType="CommentsVO">
+		<![CDATA[
+			select A.comments_NO, B.user_ID, A.contents, to_char(A.reg_date, 'yyyy-mm-dd') as reg_date, A.user_NO 
+			from comments A, member B 
+			where A.user_NO = B.user_NO and A.comments_NO = #{comments_NO} 
+		]]>
+	</select>
+	
+	<select id="list" parameterType="map" resultType="commentsVO">
+		<![CDATA[ 
+ 			SELECT comments_NO, user_ID, contents, board_NO, user_NO, reg_date, group_NO,  order_NO,  DEPTH,  rnum
+ 				 FROM (SELECT comments_NO, user_ID, contents, board_NO,  user_NO, reg_date, group_NO,  order_NO,  DEPTH,
+             		  ROWNUM AS rnum  FROM (SELECT 
+						  comments_NO,  user_ID, contents, board_NO, user_NO, TO_CHAR (reg_date, 'yyyy-mm-dd') AS reg_date, group_NO, order_NO, DEPTH
+               				   FROM comments  WHERE board_NO = #{board_NO} 
+	    		order by group_NO desc, order_NO asc)o
+	        )r where rnum >= ((#{curPage} - 1) *  #{PAGE_SIZE} + 1) and rnum <=(#{curPage} * #{PAGE_SIZE})
+		]]> 
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		<![CDATA[
+			delete from comments where comments_NO = #{comments_NO}
+		]]>
+	</delete>
+	 
+	<select id="total" parameterType="int" resultType="int">
+		<![CDATA[    
+			 select count (*) from comments where board_NO = #{board_NO}
+		 ]]> 
+	</select>
+	
+	
+</mapper>
